@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>年时间条</title>
+    <style>
+        .time-line-box {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+        }
+        .timeline {
+            width: 400px;
+            height: 50px;
+            background-color: #808080;
+            margin: auto;
+        }
+        .yearper {
+            background-color: #0F0;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="time-line-box">
+        <div class="timeline">
+            <div class="yearper" id="now"></div>
+        </div>
+    </div>
+</body>
+<script>
+    //  获得dayDif
+    var getDayPer = function(today){
+        var newYearDay =  new Date(today);
+        newYearDay.setMonth(0);
+        newYearDay.setDate(1);
+        var year = newYearDay.getFullYear();
+
+        // 判断当年是否闰年来计算当年的总天数
+        var LeapYearBool = year%400 == 0 || (year%4 == 0 && year%100 != 0);
+        var yearDayCount = LeapYearBool ? 366 : 365;
+
+        //  计算当前时间和元旦时间的时间差
+        var dayDif = (today - newYearDay)/(60*60*24*1000) + 1;
+        // 计算出百分比
+        var dayPer = (dayDif/yearDayCount * 100) + '%' ;
+
+        return dayPer;
+    }
+
+    var setWidth = function(dayPer){
+        var now = document.getElementById('now');
+        now.setAttribute('style', `width: ${dayPer}`);
+    }
+    //  获得当前时间
+     var today = new Date();
+    //  通过以1秒为节点进行周期性定时器，调用获取当前时间的函数
+    var dayPer = getDayPer(today);
+    setInterval(setWidth(dayPer),1000);
+
+
+</script>
+</html>
